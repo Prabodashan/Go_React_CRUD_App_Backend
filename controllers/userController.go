@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"server/database"
+	"server/middlewares"
 	"server/models"
 	"strconv"
 
@@ -9,9 +10,10 @@ import (
 )
 
 func AllUsers(c *fiber.Ctx) error {
-	// if err := middlewares.IsAuthorized(c, "users"); err != nil {
-	// 	return err
-	// }
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
 
@@ -19,6 +21,10 @@ func AllUsers(c *fiber.Ctx) error {
 }
 
 func CreateUser(c *fiber.Ctx) error {
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
 
 	var user models.User
 
@@ -46,6 +52,11 @@ func GetUser(c *fiber.Ctx) error {
 }
 
 func UpdateUser(c *fiber.Ctx) error {
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id"))
 
 	user := models.User{
@@ -62,6 +73,11 @@ func UpdateUser(c *fiber.Ctx) error {
 }
 
 func DeleteUser(c *fiber.Ctx) error {
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id"))
 
 	user := models.User{
